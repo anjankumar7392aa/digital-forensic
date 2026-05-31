@@ -1,0 +1,10 @@
+{
+    "threat_score": 1305,
+    "findings": [
+        "Malicious Package Installed: com.android.sysupdate-1",
+        "Dangerous Permission: SEND_SMS",
+        "Suspicious APK in Downloads: System_Update_v2.apk",
+        "Dangerous Permission: READ_CONTACTS",
+        "Dangerous Permission: READ_SMS"
+    ]
+}

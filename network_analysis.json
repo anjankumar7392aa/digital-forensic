@@ -1,0 +1,10 @@
+{
+    "findings": [
+        "C2 Connection to 192.168.1.100 (HTTP POST /api/upload)",
+        "Data Exfiltration: 8080 bytes",
+        "C2 Connection to 192.168.1.100 (HTTP payload 1450 bytes)",
+        "Data Exfiltration: 8080 bytes"
+    ],
+    "bytes_exfiltrated": 16160,
+    "score_contribution": 100
+}

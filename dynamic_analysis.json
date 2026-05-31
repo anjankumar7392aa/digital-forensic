@@ -1,0 +1,11 @@
+{
+    "threat_score": 100,
+    "findings": [
+        "Data Exfiltrated: 3 contacts",
+        "Infection Vector: /sdcard/Download/System_Update_v2.apk",
+        "Dangerous Permission Granted: android.permission.SEND_SMS",
+        "Suspicious DB Write: stolen_data.db",
+        "C2 Connection: 192.168.1.100:8080",
+        "Dangerous Permission Granted: android.permission.READ_CONTACTS"
+    ]
+}
