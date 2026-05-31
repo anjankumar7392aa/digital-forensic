@@ -1,0 +1,94 @@
+
+    <!DOCTYPE html>
+    <html lang="en">
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <title>Forensic Intelligence Dashboard</title>
+        <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+        <style>
+            body { font-family: 'Segoe UI', sans-serif; background-color: #1e1e2e; color: #cdd6f4; margin: 0; padding: 20px; }
+            h1 { color: #a6e3a1; text-align: center; border-bottom: 2px solid #313244; padding-bottom: 10px; }
+            .container { display: flex; gap: 20px; flex-wrap: wrap; }
+            .card { background-color: #181825; border-radius: 10px; padding: 20px; flex: 1; min-width: 300px; box-shadow: 0 4px 6px rgba(0,0,0,0.3); border-left: 5px solid #89b4fa; }
+            .card.danger { border-left: 5px solid #f38ba8; }
+            h2 { color: #89b4fa; margin-top: 0; }
+            .danger h2 { color: #f38ba8; }
+            code { background-color: #313244; padding: 5px; border-radius: 5px; color: #a6e3a1; word-break: break-all; }
+            table { width: 100%; border-collapse: collapse; margin-top: 10px; }
+            th, td { padding: 10px; text-align: left; border-bottom: 1px solid #313244; }
+            th { background-color: #313244; }
+            .badge { background-color: #f38ba8; color: #11111b; padding: 3px 8px; border-radius: 12px; font-size: 12px; font-weight: bold; margin-left: 10px; }
+            .score-circle { width: 100px; height: 100px; border-radius: 50%; background-color: #f38ba8; color: #11111b; display: flex; align-items: center; justify-content: center; font-size: 24px; font-weight: bold; margin: 0 auto; box-shadow: 0 0 20px #f38ba8; }
+        </style>
+    </head>
+    <body>
+
+        <h1>🛡️ Threat Intelligence Dashboard</h1>
+
+        <div class="container">
+            <div class="card">
+                <h2>Threat Signature (Hashes)</h2>
+                <p><b>Payload:</b> System_Update_v2.apk</p>
+                <p><code>6c899d0626d26751568d95ea5ed87421fd51a0eec2591ceb5651582f1389d2fd</code></p>
+                <br>
+                <p><b>Executing Binary:</b> base.apk</p>
+                <p><code>6c899d0626d26751568d95ea5ed87421fd51a0eec2591ceb5651582f1389d2fd</code></p>
+            </div>
+
+            <div class="card danger" style="max-width: 400px; align-items: center; display:flex; flex-direction: column;">
+                <h2>Risk Vector Analysis</h2>
+                <canvas id="threatChart"></canvas>
+            </div>
+
+            <div class="card danger" style="text-align: center;">
+                <h2>Heuristic Threat Score</h2>
+                <div class="score-circle">100.0%</div>
+                <p>Total Threat Score: <b>1505</b></p>
+                <p>Static: 1305 | Dynamic: 100 | Network: 100</p>
+                <p><b>Network Exfiltration:</b> 16160 bytes sent</p>
+            </div>
+        </div>
+        
+        <div class="card danger" style="margin-top: 20px;">
+            <h2>Execution Timeline (Dynamic Trace)</h2>
+            <p>Chronological sequence of the infection based on Android logcat artifacts.</p>
+            <table>
+                <tr><th>System Time</th><th>Event Type</th><th>Description</th></tr>
+                <tr><td>04-23 10:15:02.123</td><td>Payload Execution</td><td>Package Manager started installation of System_Update_v2.apk</td></tr><tr><td>04-23 10:15:10.450</td><td>Installation Complete</td><td>Malware successfully installed on device</td></tr><tr><td>04-23 10:15:12.800</td><td>Process Launch</td><td>Malware process started by user</td></tr><tr><td>04-23 10:15:15.105</td><td>Permission Exploit</td><td>Granted READ_CONTACTS permission</td></tr><tr><td>04-23 10:16:05.100</td><td style='color:#f38ba8;'>Network Exfil</td><td>Connecting to known C2 server (192.168.1.100)</td></tr>
+            </table>
+        </div>
+
+        <div class="card danger" style="margin-top: 20px;">
+            <h2>Decrypted Data Exfiltration <span class="badge">Forensic Recovery</span></h2>
+            <table>
+                <tr><th>Victim Name</th><th>Phone Number</th><th>Time of Theft</th><th>Encryption Defeated</th></tr>
+                <tr><td>Alice Smith</td><td>+15551234567</td><td>2026-04-23 22:54:03</td><td>Base64 Decoded</td></tr><tr><td>Bob Johnson</td><td>+15559876543</td><td>2026-04-23 22:54:03</td><td>Base64 Decoded</td></tr><tr><td>Charlie Brown</td><td>+15555551212</td><td>2026-04-23 22:54:03</td><td>Base64 Decoded</td></tr><tr><td>Alice Smith</td><td>+15551234567</td><td>2026-04-23 22:55:28</td><td>Base64 Decoded</td></tr><tr><td>Bob Johnson</td><td>+15559876543</td><td>2026-04-23 22:55:28</td><td>Base64 Decoded</td></tr><tr><td>Charlie Brown</td><td>+15555551212</td><td>2026-04-23 22:55:28</td><td>Base64 Decoded</td></tr><tr><td>Alice Smith</td><td>+15551234567</td><td>2026-04-23 23:03:57</td><td>Base64 Decoded</td></tr><tr><td>Bob Johnson</td><td>+15559876543</td><td>2026-04-23 23:03:57</td><td>Base64 Decoded</td></tr><tr><td>Charlie Brown</td><td>+15555551212</td><td>2026-04-23 23:03:57</td><td>Base64 Decoded</td></tr><tr><td>Alice Smith</td><td>+15551234567</td><td>2026-04-23 23:05:17</td><td>Base64 Decoded</td></tr><tr><td>Bob Johnson</td><td>+15559876543</td><td>2026-04-23 23:05:17</td><td>Base64 Decoded</td></tr><tr><td>Charlie Brown</td><td>+15555551212</td><td>2026-04-23 23:05:17</td><td>Base64 Decoded</td></tr><tr><td>Alice Smith</td><td>+15551234567</td><td>2026-04-24 09:28:58</td><td>Base64 Decoded</td></tr><tr><td>Bob Johnson</td><td>+15559876543</td><td>2026-04-24 09:28:58</td><td>Base64 Decoded</td></tr><tr><td>Charlie Brown</td><td>+15555551212</td><td>2026-04-24 09:28:58</td><td>Base64 Decoded</td></tr><tr><td>Alice Smith</td><td>+15551234567</td><td>2026-04-24 09:40:05</td><td>Base64 Decoded</td></tr><tr><td>Bob Johnson</td><td>+15559876543</td><td>2026-04-24 09:40:05</td><td>Base64 Decoded</td></tr><tr><td>Charlie Brown</td><td>+15555551212</td><td>2026-04-24 09:40:05</td><td>Base64 Decoded</td></tr><tr><td>Alice Smith</td><td>+15551234567</td><td>2026-04-24 09:42:05</td><td>Base64 Decoded</td></tr><tr><td>Bob Johnson</td><td>+15559876543</td><td>2026-04-24 09:42:05</td><td>Base64 Decoded</td></tr><tr><td>Charlie Brown</td><td>+15555551212</td><td>2026-04-24 09:42:05</td><td>Base64 Decoded</td></tr><tr><td>Alice Smith</td><td>+15551234567</td><td>2026-04-24 10:20:01</td><td>Base64 Decoded</td></tr><tr><td>Bob Johnson</td><td>+15559876543</td><td>2026-04-24 10:20:01</td><td>Base64 Decoded</td></tr><tr><td>Charlie Brown</td><td>+15555551212</td><td>2026-04-24 10:20:01</td><td>Base64 Decoded</td></tr><tr><td>Alice Smith</td><td>+15551234567</td><td>2026-04-24 10:20:42</td><td>Base64 Decoded</td></tr><tr><td>Bob Johnson</td><td>+15559876543</td><td>2026-04-24 10:20:42</td><td>Base64 Decoded</td></tr><tr><td>Charlie Brown</td><td>+15555551212</td><td>2026-04-24 10:20:42</td><td>Base64 Decoded</td></tr><tr><td>Alice Smith</td><td>+15551234567</td><td>2026-04-24 11:46:10</td><td>Base64 Decoded</td></tr><tr><td>Bob Johnson</td><td>+15559876543</td><td>2026-04-24 11:46:10</td><td>Base64 Decoded</td></tr><tr><td>Charlie Brown</td><td>+15555551212</td><td>2026-04-24 11:46:10</td><td>Base64 Decoded</td></tr><tr><td>Alice Smith</td><td>+15551234567</td><td>2026-04-24 11:56:20</td><td>Base64 Decoded</td></tr><tr><td>Bob Johnson</td><td>+15559876543</td><td>2026-04-24 11:56:20</td><td>Base64 Decoded</td></tr><tr><td>Charlie Brown</td><td>+15555551212</td><td>2026-04-24 11:56:20</td><td>Base64 Decoded</td></tr><tr><td>Alice Smith</td><td>+15551234567</td><td>2026-04-24 12:03:36</td><td>Base64 Decoded</td></tr><tr><td>Bob Johnson</td><td>+15559876543</td><td>2026-04-24 12:03:36</td><td>Base64 Decoded</td></tr><tr><td>Charlie Brown</td><td>+15555551212</td><td>2026-04-24 12:03:36</td><td>Base64 Decoded</td></tr><tr><td>harry</td><td>+918745932108</td><td>2026-04-24 12:03:36</td><td>Base64 Decoded</td></tr><tr><td>Maddy</td><td>+1234567890</td><td>2026-04-24 12:03:36</td><td>Base64 Decoded</td></tr><tr><td>susan</td><td>+1234567890</td><td>2026-04-24 12:03:36</td><td>Base64 Decoded</td></tr><tr><td>rachel</td><td>+1234567890</td><td>2026-04-24 12:03:36</td><td>Base64 Decoded</td></tr><tr><td>john</td><td>+1234567890</td><td>2026-04-24 12:03:36</td><td>Base64 Decoded</td></tr><tr><td>peter</td><td>+1234567890</td><td>2026-04-24 12:03:36</td><td>Base64 Decoded</td></tr><tr><td>mary</td><td>+1234567890</td><td>2026-04-24 12:03:36</td><td>Base64 Decoded</td></tr><tr><td>Alice Smith</td><td>+15551234567</td><td>2026-04-24 12:03:40</td><td>Base64 Decoded</td></tr><tr><td>Bob Johnson</td><td>+15559876543</td><td>2026-04-24 12:03:40</td><td>Base64 Decoded</td></tr><tr><td>Charlie Brown</td><td>+15555551212</td><td>2026-04-24 12:03:40</td><td>Base64 Decoded</td></tr><tr><td>harry</td><td>+918745932108</td><td>2026-04-24 12:03:40</td><td>Base64 Decoded</td></tr><tr><td>Maddy</td><td>+1234567890</td><td>2026-04-24 12:03:40</td><td>Base64 Decoded</td></tr><tr><td>susan</td><td>+1234567890</td><td>2026-04-24 12:03:40</td><td>Base64 Decoded</td></tr><tr><td>rachel</td><td>+1234567890</td><td>2026-04-24 12:03:40</td><td>Base64 Decoded</td></tr><tr><td>john</td><td>+1234567890</td><td>2026-04-24 12:03:40</td><td>Base64 Decoded</td></tr><tr><td>peter</td><td>+1234567890</td><td>2026-04-24 12:03:40</td><td>Base64 Decoded</td></tr><tr><td>mary</td><td>+1234567890</td><td>2026-04-24 12:03:40</td><td>Base64 Decoded</td></tr><tr><td>Alice Smith</td><td>+15551234567</td><td>2026-04-24 12:06:21</td><td>Base64 Decoded</td></tr><tr><td>Bob Johnson</td><td>+15559876543</td><td>2026-04-24 12:06:21</td><td>Base64 Decoded</td></tr><tr><td>Charlie Brown</td><td>+15555551212</td><td>2026-04-24 12:06:21</td><td>Base64 Decoded</td></tr><tr><td>harry</td><td>+918745932108</td><td>2026-04-24 12:06:21</td><td>Base64 Decoded</td></tr><tr><td>Maddy</td><td>+1234567890</td><td>2026-04-24 12:06:21</td><td>Base64 Decoded</td></tr><tr><td>susan</td><td>+6543289717</td><td>2026-04-24 12:06:21</td><td>Base64 Decoded</td></tr><tr><td>rachel</td><td>+1234965872</td><td>2026-04-24 12:06:21</td><td>Base64 Decoded</td></tr><tr><td>john</td><td>+12963258741</td><td>2026-04-24 12:06:21</td><td>Base64 Decoded</td></tr><tr><td>peter</td><td>+146879324</td><td>2026-04-24 12:06:21</td><td>Base64 Decoded</td></tr><tr><td>mary</td><td>+2589631478</td><td>2026-04-24 12:06:21</td><td>Base64 Decoded</td></tr><tr><td>Alice Smith</td><td>+15551234567</td><td>2026-04-24 12:33:26</td><td>Base64 Decoded</td></tr><tr><td>Bob Johnson</td><td>+15559876543</td><td>2026-04-24 12:33:26</td><td>Base64 Decoded</td></tr><tr><td>Charlie Brown</td><td>+15555551212</td><td>2026-04-24 12:33:26</td><td>Base64 Decoded</td></tr><tr><td>harry</td><td>+918745932108</td><td>2026-04-24 12:33:26</td><td>Base64 Decoded</td></tr><tr><td>Maddy</td><td>+1234567890</td><td>2026-04-24 12:33:26</td><td>Base64 Decoded</td></tr><tr><td>susan</td><td>+6543289717</td><td>2026-04-24 12:33:26</td><td>Base64 Decoded</td></tr><tr><td>rachel</td><td>+1234965872</td><td>2026-04-24 12:33:26</td><td>Base64 Decoded</td></tr><tr><td>john</td><td>+12963258741</td><td>2026-04-24 12:33:26</td><td>Base64 Decoded</td></tr><tr><td>peter</td><td>+146879324</td><td>2026-04-24 12:33:26</td><td>Base64 Decoded</td></tr><tr><td>mary</td><td>+2589631478</td><td>2026-04-24 12:33:26</td><td>Base64 Decoded</td></tr><tr><td>Alice Smith</td><td>+15551234567</td><td>2026-04-24 18:47:41</td><td>Base64 Decoded</td></tr><tr><td>Bob Johnson</td><td>+15559876543</td><td>2026-04-24 18:47:41</td><td>Base64 Decoded</td></tr><tr><td>Charlie Brown</td><td>+15555551212</td><td>2026-04-24 18:47:41</td><td>Base64 Decoded</td></tr><tr><td>harry</td><td>+918745932108</td><td>2026-04-24 18:47:41</td><td>Base64 Decoded</td></tr><tr><td>Maddy</td><td>+1234567890</td><td>2026-04-24 18:47:41</td><td>Base64 Decoded</td></tr><tr><td>susan</td><td>+6543289717</td><td>2026-04-24 18:47:41</td><td>Base64 Decoded</td></tr><tr><td>rachel</td><td>+1234965872</td><td>2026-04-24 18:47:41</td><td>Base64 Decoded</td></tr><tr><td>john</td><td>+12963258741</td><td>2026-04-24 18:47:41</td><td>Base64 Decoded</td></tr><tr><td>peter</td><td>+146879324</td><td>2026-04-24 18:47:41</td><td>Base64 Decoded</td></tr><tr><td>mary</td><td>+2589631478</td><td>2026-04-24 18:47:41</td><td>Base64 Decoded</td></tr>
+            </table>
+        </div>
+
+        <script>
+            const ctx = document.getElementById('threatChart').getContext('2d');
+            new Chart(ctx, {
+                type: 'doughnut',
+                data: {
+                    labels: ['Safe Operations', 'Network Exfil', 'Permission Abuse', 'Data Theft'],
+                    datasets: [{
+                        label: 'Threat Events',
+                        data: [1, 2, 4, 83],
+                        backgroundColor: ['#a6e3a1', '#f9e2af', '#fab387', '#f38ba8'],
+                        borderColor: '#181825',
+                        borderWidth: 2
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    plugins: {
+                        legend: { position: 'bottom', labels: { color: '#cdd6f4' } }
+                    }
+                }
+            });
+        </script>
+    </body>
+    </html>
+    
